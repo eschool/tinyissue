@@ -11,16 +11,25 @@ Route::any('project/(:num)/issue/new', 'project.issue@new');
 Route::any('project/(:num)/issue/(:num)', 'project.issue@index');
 Route::any('project/(:num)/issue/(:num)/(:any)', 'project.issue@(:3)');
 
-
+/**
+ * BEGIN Routes by:
+ * @author eSchool Consultants
+ */
+Route::get('roles', array('as' => 'roles_index', 'uses' => 'administration.roles@index'));
+Route::get('roles/new', array('as' => 'roles_new', 'uses' => 'administration.roles@new'));
+/**
+ * END Routes by:
+ * @author eSchool Consultants
+ */
 Route::controller(array(
-	'home',
-	'project',
-	'projects',
-	'login',
-	'user',
-	'administration.users',
-	'administration',
-	'ajax.project'
+  'home',
+  'project',
+  'projects',
+  'login',
+  'user',
+  'administration.users',
+  'administration',
+  'ajax.project'
 ));
 
 
@@ -32,49 +41,75 @@ Route::controller(array(
 
 View::composer('layouts.wrapper', function($view)
 {
-	Asset::style('app', 'app/assets/css/app.css');
-	Asset::script('jquery', 'app/assets/js/jquery.js');
-	Asset::script('jquery-ui', 'app/assets/js/jquery-ui.js');
-	Asset::script('app', 'app/assets/js/app.js', 'jquery-ui');
+  Asset::style('app', 'app/assets/css/app.css');
+   /**
+   * BEGIN - eSchool Consultants Mod
+   * Adds various style sheets
+   * @author David Varney
+   */
+  Asset::style('tb_core', 'app/assets/css/bootstrap.min.css');
+  Asset::style('tb_responsive', 'app/assets/css/bootstrap-responsive.min.css');
+  Asset::style('tb_responsive', 'app/assets/css/eschool.css');
+  /**
+   * END - eSchool Consultants Mod
+   * Adds various style sheets
+   * @author David Varney
+   */
 
-	if(!isset($view->sidebar))
-	{
-		$view->with('sidebar', View::make('layouts.blocks.default_sidebar'));
-	}
+  Asset::script('jquery', 'app/assets/js/jquery.js');
+  Asset::script('jquery-ui', 'app/assets/js/jquery-ui.js');
+  Asset::script('app', 'app/assets/js/app.js', 'jquery-ui');
+
+  /**
+   * BEGIN - eSchool Consultants Mod
+   * Adds various scripts
+   * @author David Varney
+   */
+  Asset::script('tb', 'app/assets/js/bootstrap.min.js');
+  /**
+   * END - eSchool Consultants Mod
+   * Adds various scripts
+   * @author David Varney
+   */
+
+  if(!isset($view->sidebar))
+  {
+    $view->with('sidebar', View::make('layouts.blocks.default_sidebar'));
+  }
 });
 
 View::composer('layouts.project', function($view)
 {
-	Asset::style('app', 'app/assets/css/app.css');
-	Asset::script('jquery', 'app/assets/js/jquery.js');
-	Asset::script('jquery-ui', 'app/assets/js/jquery-ui.js');
-	Asset::script('app', 'app/assets/js/app.js', 'jquery');
+  Asset::style('app', 'app/assets/css/app.css');
+  Asset::script('jquery', 'app/assets/js/jquery.js');
+  Asset::script('jquery-ui', 'app/assets/js/jquery-ui.js');
+  Asset::script('app', 'app/assets/js/app.js', 'jquery');
 
-	Asset::script('swf', '/app/assets/js/uploadify/swfobject.js', 'app');
-	Asset::script('uploadify', '/app/assets/js/uploadify/jquery.uploadify.v2.1.4.min.js', 'app');
-	Asset::script('project', '/app/assets/js/project.js', 'uploadify');
+  Asset::script('swf', '/app/assets/js/uploadify/swfobject.js', 'app');
+  Asset::script('uploadify', '/app/assets/js/uploadify/jquery.uploadify.v2.1.4.min.js', 'app');
+  Asset::script('project', '/app/assets/js/project.js', 'uploadify');
 
-	if(!isset($view->sidebar))
-	{
-		$view->with('sidebar', View::make('project.sidebar'));
-	}
+  if(!isset($view->sidebar))
+  {
+    $view->with('sidebar', View::make('project.sidebar'));
+  }
 
-	$view->active = 'projects';
+  $view->active = 'projects';
 });
 
 View::composer('layouts.login', function($view)
 {
-	Asset::style('login', 'app/assets/css/login.css');
+  Asset::style('login', 'app/assets/css/login.css');
 });
 
 Event::listen('404', function()
 {
-	return Response::error('404');
+  return Response::error('404');
 });
 
 Event::listen('500', function()
 {
-	return Response::error('500');
+  return Response::error('500');
 });
 
 /*
@@ -95,40 +130,40 @@ Route::filter('after', function($response)
 
 Route::filter('csrf', function()
 {
-	if (Request::forged()) return Response::error('500');
+  if (Request::forged()) return Response::error('500');
 });
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to('login');
+  if (Auth::guest()) return Redirect::to('login');
 });
 
 Route::filter('ajax', function()
 {
-	if (!Request::ajax()) return Response::error('404');
+  if (!Request::ajax()) return Response::error('404');
 });
 
 Route::filter('project', function()
 {
-	Project::load_project(Request::route()->parameters[0]);
+  Project::load_project(Request::route()->parameters[0]);
 
-	if(!Project::current())
-	{
-		return Response::error('404');
-	}
+  if(!Project::current())
+  {
+    return Response::error('404');
+  }
 });
 
 Route::filter('issue', function()
 {
-	Project\Issue::load_issue(Request::route()->parameters[1]);
+  Project\Issue::load_issue(Request::route()->parameters[1]);
 
-	if(!Project\Issue::current())
-	{
-		return Response::error('404');
-	}
+  if(!Project\Issue::current())
+  {
+    return Response::error('404');
+  }
 });
 
 Route::filter('permission', function($permission)
 {
-	if(!Auth::user()->permission($permission)) return Response::error('500');
+  if(!Auth::user()->permission($permission)) return Response::error('500');
 });

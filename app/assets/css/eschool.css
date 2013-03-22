@@ -1,0 +1,10 @@
+/**
+ * eSchool Consultants Custom CSS
+ */
+
+/**
+ * Moves the "Add New Role" button to the right
+ */
+h3 .add-new-role{
+    float: right;
+}
