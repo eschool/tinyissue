@@ -8,3 +8,22 @@
 h3 .add-new-role{
     float: right;
 }
+
+/**
+ * This relates to Twitter Bootstrap
+ * and hiding icon lables
+ * @author David Varney
+ */
+[class^="icon-"], [class*=" icon-"] {
+    text-indent: 999em;
+    overflow: hidden;
+}
+
+/**
+ * Lets go ahead and change the cursor type to a pointer
+ * if the user is hovering over an icon
+ * @author David Varney
+ */
+[class^="icon-"]:hover, [class*=" icon-"]:hover {
+    cursor: pointer;
+}

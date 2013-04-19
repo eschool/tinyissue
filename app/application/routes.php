@@ -11,16 +11,6 @@ Route::any('project/(:num)/issue/new', 'project.issue@new');
 Route::any('project/(:num)/issue/(:num)', 'project.issue@index');
 Route::any('project/(:num)/issue/(:num)/(:any)', 'project.issue@(:3)');
 
-/**
- * BEGIN Routes by:
- * @author eSchool Consultants
- */
-Route::get('roles', array('as' => 'roles_index', 'uses' => 'administration.roles@index'));
-Route::get('roles/new', array('as' => 'roles_new', 'uses' => 'administration.roles@new'));
-/**
- * END Routes by:
- * @author eSchool Consultants
- */
 Route::controller(array(
   'home',
   'project',
@@ -28,8 +18,10 @@ Route::controller(array(
   'login',
   'user',
   'administration.users',
+  'administration.roles',// eSchool Consultants (David Varney)
   'administration',
-  'ajax.project'
+  'ajax.project',
+
 ));
 
 

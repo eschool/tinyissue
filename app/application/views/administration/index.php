@@ -4,7 +4,7 @@
 </h3>
 <h3>
     <?php echo __('eschool.admin_links_heading'); ?>
-    <span><?= HTML::link_to_route('roles_index', 'Roles'); ?></span>
+    <span><?= HTML::link(URL::to('administration/roles'), 'Roles'); ?></span>
 </h3>
 
 <div class="pad">

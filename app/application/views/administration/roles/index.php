@@ -1,43 +1,29 @@
 <h3>
-    <!--<a href="<?php //echo URL::to('administration/users/add');?>" class="addnewuser"><?php //echo __('tinyissue.add_new_user'); ?></a>-->
-    <?= HTML::link_to_route('roles_new', __('eschool.add_new_role'), array(), array('class' => 'btn btn-success add-new-role')); ?>
+    <?= HTML::link(URL::to('administration/roles/add'), __('eschool.add_new_role'),array('class' => 'btn btn-success add-new-role')); ?>
     <?php echo __('eschool.roles'); ?>
     <span><?php echo __('eschool.roles_description'); ?></span>
 </h3>
 
-<div class="pad">
-
-    <div id="users-list">
-
-        <?php foreach($roles as $role):?>
-
-            <h4>
-                <?php echo $role->name; ?>
-                <span><?php echo $role->description; ?></span>
-            </h4>
-
-            <ul>
-                <?php foreach(User::where('role_id', '=', $role->id)->where('deleted', '=', 0)->order_by('firstname', 'asc')->get() as $user): ?>
-                <li>
-                    <ul>
-                        <?php if(!$user->me()): ?>
-                        <li class="delete">
-                            <a href="<?php echo URL::to('administration/users/delete/' . $user->id);?>" onClick="return confirm('<?php echo __('tinyissue.delete_user_confirm'); ?>');" class="button tiny error right"><?php echo __('tinyissue.delete'); ?></a>
-                        </li>
-                        <?php endif; ?>
-                        <li class="edit">
-                            <a href="<?php echo URL::to('administration/users/edit/' . $user->id);?>"><?php echo __('tinyissue.edit'); ?></a>
-                        </li>
-                    </ul>
-
-                    <a class="name" href="<?php echo URL::to('administration/users/edit/' . $user->id);?>"><?php echo $user->firstname . ' ' . $user->lastname; ?></a>
-
-                </li>
-                <?php endforeach; ?>
-            </ul>
-
-        <?php endforeach; ?>
-
-    </div>
-
-</div>
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach($roles as $role):?>
+            <tr>
+               <td><?= $role->name; ?></td>
+               <td><?= $role->role; ?></td>
+               <td><?= $role->description; ?></td>
+               <td>
+                   <a href="<?php echo URL::to('administration/roles/edit/' . $role->id);?>" class="icon-pencil"><?php echo __('eschool.edit'); ?></a>
+                   <a href="<?php echo URL::to('administration/roles/delete/' . $role->id);?>" onClick="return confirm('<?php echo __('eschool.delete_role_confirm'); ?>');" class="icon-remove"><?php echo __('eschool.delete'); ?></a>
+               </td>
+            </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
